@@ -1,56 +1,68 @@
-import React from "react";
-import socket from "./socket";
+import React, {useEffect} from "react";
+import MessageROUTE from "./MESSAGE/MessageROUTE";
+import {BrowserRouter as Router, Switch, Link, Route} from 'react-router-dom';
+import MyProfileROUTE from "./MY_PROFILE/MyProfileROUTE";
+import {connect} from "react-redux";
+import {SetPersonalAvatarAction} from "../actions/SetPersonalDataAction";
 
-import Massages from "./Massages";
-import InputMassage from "./InputMassage";
-import Companion from "./Companion";
-import Friends from "./Friends";
-import EnterWindow from "./EnterWindow";
 
-export default function Content() {
-    const [messages, setMessages] = React.useState([]);
-    const [name, setName] = React.useState("");
-    const [companion, setCompanion] = React.useState("");
-    const [enterWindow, setEnterWindow] = React.useState(true);
 
+function Content({SetPersonalAvatar, personalDataReducer, socketReducer}) {
+    let {socket} = socketReducer;
+    let {user_name} = personalDataReducer;
+    const [activeBookmarks, setActiveBookmarks] = React.useState(1);
+    const menuItem = [["Моя страница", "/My_profile"],
+                      ["Сообщения", "/"],
+                      ["Новости", "/news"],
+                      ["Настройки", "/settings"]];
+
+    //SET AVATAR
+    useEffect(() => {
+        SetPersonalAvatar(personalDataReducer);
+        socket.emit("online", {user_name, mySocket: socket.id})
+    }, []);
 
 
     return (
-        <div className="content">
-            <div className="bookmarks-menu">
-                <div className="bookmarks">Моя страница</div>
-                <div className="bookmarks activeBookmarks">Сообщения</div>
-                <div className="bookmarks">Новости</div>
-                <div className="bookmarks">Настройки</div>
-            </div>
+            <Router>
+                <div className="content">
+                    <div className="bookmarks-menu">
 
-            <div className="work-area">
+                        {menuItem.map((item, index) =>
+                            <div className={index === activeBookmarks ? "bookmarks activeBookmarks" : "bookmarks"}
+                                 onClick={() => setActiveBookmarks(index)}
+                                 key={index}>
+                                <Link to={item[1]}>{item[0]}</Link>
+                            </div>
+                        )}
 
-                <Friends setCompanion={setCompanion} socket={socket} sender={name}/>
-
-                <div className="messages-area">
-
-                    {!enterWindow ? "" :
-                        <EnterWindow setName={setName} setEnterWindow={setEnterWindow} socket={socket}/>
-                    }
+                    </div>
 
 
-                    {companion === "" ? "" :
-                        <>
-                            <Companion companion={companion}/>
-
-                            <Massages messages={messages} setMessages={setMessages} name={name} socket={socket}/>
-
-                            <InputMassage socket={socket} name={name} companion={companion}/>
-                        </>
-                    }
-
+                    <Switch>
+                        <Route exact path="/" component={MessageROUTE}/>
+                        <Route exact path="/My_profile" component={MyProfileROUTE}/>
+                    </Switch>
                 </div>
-
-            </div>
-
-
-        </div>
+            </Router>
     );
 }
+
+
+const mapDispatchToProps = {
+    SetPersonalAvatar: SetPersonalAvatarAction
+}
+
+function mapStateToProps(state) {
+    return state;
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(Content);
+
+
+
+//сделать загрузку картинки на сервер через страницу профиля
+//сделать возможность изменения имени и пароля
+//начать делать новостную ленту
 
