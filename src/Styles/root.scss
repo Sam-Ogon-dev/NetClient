@@ -7,37 +7,3 @@
   background: url("../assets/background.jpg");
   overflow-y: auto;
 }
-
-.enter-window {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color:  rgba(0,0,0,0.29);
-  z-index: 2;
-}
-
-.enter-form {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  width: 40%;
-  height: 40%;
-  background-color: #f1f9fd;
-  border-radius: 7px;
-
-  input {
-    font-size: 25px;
-    text-align: center;
-    margin-bottom: 15px;
-  }
-
-  button {
-    font-size: 20px;
-  }
-}
