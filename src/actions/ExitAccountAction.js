@@ -7,7 +7,8 @@ export function ExitAccountAction() {
             user_name: "",
             id: "",
             avatar: "",
-            auth: null
+            auth: null,
+            favourites: ""
         }
     }
 }

@@ -72,6 +72,9 @@
 .favourites {
   width: 5%;
   img {
+    &:hover {
+      cursor: pointer;
+    }
     width: 80%;
     object-fit: contain;
   }

@@ -7,7 +7,8 @@ function initialState() {
             user_name: cookie.load("user_name"),
             id: +cookie.load("id"),
             avatar: "",
-            auth: cookie.load("auth")
+            auth: cookie.load("auth"),
+            favourites: cookie.load("favourites").split(":")
         }
     } else if (cookie.load("auth") === "process") {
         cookie.save("auth", "process");
@@ -15,7 +16,8 @@ function initialState() {
             user_name: "",
             id: "",
             avatar: "",
-            auth: cookie.load("auth")
+            auth: cookie.load("auth"),
+            favourites: ""
         }
     } else {
         cookie.save("auth", "process");
@@ -24,7 +26,8 @@ function initialState() {
             user_name: "",
             id: "",
             avatar: "",
-            auth: cookie.load("auth")
+            auth: cookie.load("auth"),
+            favourites: ""
         }
     }
 }
@@ -35,7 +38,8 @@ export function personalDataReducer(state = initialState(), action) {
                 user_name: action.payload.user_name,
                 id: action.payload.id,
                 avatar: action.payload.avatar,
-                auth: action.payload.auth
+                auth: action.payload.auth,
+                favourites: action.payload.favourites
                 }
     }
 
@@ -44,7 +48,8 @@ export function personalDataReducer(state = initialState(), action) {
             user_name: action.payload.user_name,
             id: action.payload.id,
             avatar: action.payload.avatar,
-            auth: action.payload.auth
+            auth: action.payload.auth,
+            favourites: action.payload.favourites
         }
     }
     return state;

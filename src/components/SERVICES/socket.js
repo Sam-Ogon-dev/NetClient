@@ -1,6 +1,7 @@
 import io from "socket.io-client";
+import {ADDRESS} from "../../config";
 
-let socket = io("http://192.168.1.10:3001/");
+let socket = io(ADDRESS);
 
 
 export default socket;

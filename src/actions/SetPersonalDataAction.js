@@ -1,27 +1,63 @@
 import {SET_PERSONAL_AVATAR, SET_PERSONAL_DATA} from "../reducers/types";
 import {getAvatar} from "../components/SERVICES/services";
+import cookie from "react-cookies";
+import {ADDRESS} from "../config";
 
-export function SetPersonalDataAction(user_name, id) {
+
+function changeFavourites(favourites, id) {
+    fetch(ADDRESS + "/changeFavourites", {
+        method: "PUT",
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+        },
+        body: JSON.stringify({ favourites: favourites, id })
+    }).then(() => {
+        cookie.save("favourites",`:${favourites}`);
+    });
+}
+
+
+
+
+
+export function SetPersonalDataAction(state, user_name, id, favourites = "") {
         return async dispatch => {
-            const avatar = await getAvatar(user_name);
+            const avatar = await getAvatar(id);
             dispatch({
                 type: SET_PERSONAL_DATA,
-                payload: {
-                    user_name,
-                    id,
-                    avatar: avatar,
-                    auth: "true"
-                }
+                payload: {...state, user_name, id, auth: "true", avatar, favourites: favourites.split(":")}
             });
         }
 }
 
 export function SetPersonalAvatarAction(state) {
     return async dispatch => {
-        const avatar = await getAvatar(state.user_name);
+        const avatar = await getAvatar(state.id);
         dispatch({
             type: SET_PERSONAL_AVATAR,
-            payload: {...state, avatar: avatar}
+            payload: {...state, avatar}
         });
     }
+}
+
+export function SetFavouritesAction(state, postID) {
+
+    let favourites = state.favourites;
+    const indexPostID = favourites.indexOf(postID);
+
+
+    if (indexPostID >= 0) {
+        favourites.splice(indexPostID, 1);
+    } else {
+        favourites.push(postID);
+    }
+
+    changeFavourites(favourites.join(":"), state.id);
+
+
+    return {
+        type: SET_PERSONAL_DATA,
+        payload: { ...state, favourites }
+    }
+
 }

@@ -1,0 +1,64 @@
+%profile-general {
+  padding: 5px;
+  box-shadow: 0 0 3px rgba(0,0,0,0.61);
+  border-radius: 3px;
+  font-size: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+}
+
+
+.button-change {
+  background-color: #ffe645;
+  margin: 10px;
+  cursor: pointer;
+  @extend %profile-general;
+  &:hover {
+    background-color: #ffffff;
+  }
+}
+
+.button-accept {
+  background-color: #8bff6d;
+  margin: 10px;
+  cursor: pointer;
+  @extend %profile-general;
+  &:hover {
+    background-color: #ffffff;
+  }
+}
+
+.label-profile-mini {
+  @extend %profile-general;
+  font-size: 15px;
+  box-shadow: none;
+
+}
+
+.button-cancel {
+  @extend %profile-general;
+  background-color: red;
+  margin: 10px;
+  cursor: pointer;
+  &:hover {
+    background-color: #ffffff;
+  }
+}
+
+.control-buttons {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  width: 100%;
+}
+
+.avatar {
+  box-shadow: 1px 1px 7px black;
+  margin: 0 10px 0 10px;
+  width: 80px;
+  height: 80px;
+  border-radius: 40px;
+  object-fit: cover;
+}
