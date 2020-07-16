@@ -1,0 +1,130 @@
+.news-block {
+  display: flex;
+  width: 100%;
+  height: inherit;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.news-feed {
+  height: 85vh;
+  width: 70%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding: 10px;
+  overflow-y: auto;
+}
+
+.post {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: center;
+}
+
+.post-content {
+  margin-left: 10px;
+  margin-right: 10px;
+  box-shadow: 0 0 3px rgba(0,0,0,0.62);
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  width: 60%;
+  background-color: rgba(200, 252, 229, 0.59);
+  border-radius: 5px;
+}
+
+.post-image {
+  width: inherit;
+  height: inherit;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+.post-text {
+  margin-top: 10px;
+  background-color: rgba(122, 255, 224, 0.71);
+  border-radius: 5px;
+  width: inherit;
+  padding: 5px;
+  box-shadow: 0 0 3px rgba(0,0,0,0.62);
+}
+
+.author {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 20%;
+  width: 20%;
+}
+
+.user-name {
+  margin-top: 5px;
+  font-size: 25px;
+  display: flex;
+  text-align: center;
+}
+
+.favourites {
+  width: 5%;
+  img {
+    width: 80%;
+    object-fit: contain;
+  }
+}
+
+.side-panel {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 20%;
+  background-color: rgba(122, 255, 251, 0.58);
+  border-radius: 0 10px 10px 0;
+  border-left: 1px solid black;
+}
+
+.side-menu-item {
+  display: flex;
+  font-size: 26px;
+  margin: 10px;
+  background-color: #45caff;
+  width: 80%;
+  height: 8%;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  box-shadow: 0 0 3px rgba(0,0,0,0.62);
+  cursor: pointer;
+  &:hover {
+    background-color: #ace4ff;
+  }
+}
+
+.active-menu-item {
+  display: flex;
+  font-size: 26px;
+  margin: 10px;
+  background-color: #ffe645;
+  width: 80%;
+  height: 8%;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  box-shadow: 0 0 3px rgba(0,0,0,0.62);
+  cursor: pointer;
+}
+
+.input-post {
+  padding: 5px;
+  margin: 10px;
+  border-radius: 10px;
+  background-color: rgba(2, 217, 255, 0.31);
+  height: 150px;
+  max-height: 300px;
+  width: 85%;
+  box-shadow: inset 0 0 5px black;
+}
