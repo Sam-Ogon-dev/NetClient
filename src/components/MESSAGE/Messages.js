@@ -1,12 +1,15 @@
 import React from "react";
 import {getAvatar} from "../SERVICES/services";
 import {connect} from "react-redux";
+import {ADDRESS} from "../../config";
+import Loader_1 from "../../Styles/Loader/Loader_1";
 
 
 
 function Messages({messages, setMessages, socket, correspondenceID, companion, myID, avatar}) {
     const refMessages = React.useRef();
     const [avatarCompanion, setAvatarCompanion] = React.useState();
+    const [messagesLoaded, setMessagesLoaded] = React.useState(false);
 
 
 
@@ -18,8 +21,18 @@ function Messages({messages, setMessages, socket, correspondenceID, companion, m
         });
 
         return () => {
-            console.log("111111");
             socket.off("message:GET");
+        }
+    });
+
+    //OFF MESSAGES SOCKET-EVENT IF ADDRESS IS CHANGE
+    React.useEffect(() => {
+        const address = window.location.href;
+        return () => {
+            if(window.location.href !== address) {
+                if(!correspondenceID) {return}
+                socket.emit("changeStatus", {correspondenceID: correspondenceID});
+            }
         }
     });
 
@@ -27,12 +40,16 @@ function Messages({messages, setMessages, socket, correspondenceID, companion, m
     //GET CORRESPONDENCE WHEN THE COMPANION CHANGED
     React.useEffect(() => {
         if(!correspondenceID) return;
+        setMessagesLoaded(false);
 
-        fetch(`http://localhost:3001/correspondence?correspondenceID=${correspondenceID}`).then(r => {
+        fetch(ADDRESS + `/correspondence?correspondenceID=${correspondenceID}`).then(r => {
             return r.json();
         }).then(r => {
             setMessages(r);
+            setMessagesLoaded(true);
         });
+
+        //GET AVATAR OF COMPANION
         getAvatar(companion).then(r => setAvatarCompanion(r));
     }, [correspondenceID])
 
@@ -45,16 +62,22 @@ function Messages({messages, setMessages, socket, correspondenceID, companion, m
 
 
     return(
-        <div ref={refMessages} className="massages">
-            {   messages.length === 0 ? "" :
-                messages.map((item, index) =>
-                <div className={myID === item.id ? "me" : "you"} key={index}>
-                    <div className="inner-massage">
-                        {item.message}
-                    </div>
-                    <img src={myID === item.id ? avatar : avatarCompanion} className="avatar" alt="avatar"/>
-                </div>
-            )}
+        <div ref={refMessages} className="messages">
+            {messagesLoaded ?
+
+                    messages.length === 0 ? "" :
+                        messages.map((item, index) =>
+                            <div className={myID === item.id ? "me" : "you"} key={index}>
+                                <div className="inner-massage">
+                                    {item.message}
+                                </div>
+                                <img src={myID === item.id ? avatar : avatarCompanion} className="avatar" alt="avatar"/>
+                            </div>
+                        )
+
+                :
+                <Loader_1 />
+            }
 
         </div>
     );

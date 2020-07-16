@@ -1,9 +1,10 @@
 import React from "react";
 import {connect} from "react-redux";
 import {SetPersonalDataAction} from "../actions/SetPersonalDataAction";
+import {ADDRESS} from "../config";
 
 
-function EnterWindow({ socket, SetPersonalData }) {
+function EnterWindow({ socket, SetPersonalDataAction, personalDataReducer }) {
     const refInputName = React.useRef();
     const refInputEmail = React.useRef();
     const [blockName, setBlockName] = React.useState(false);
@@ -12,7 +13,7 @@ function EnterWindow({ socket, SetPersonalData }) {
 
     //AUTH
     function auth() {
-        fetch("http://localhost:3001/auth", {
+        fetch(ADDRESS + "/auth", {
             method: 'POST',
             credentials: "include",
             headers: {
@@ -25,14 +26,14 @@ function EnterWindow({ socket, SetPersonalData }) {
             } else {
                 setNotice(false);
                 socket.emit("online", {user_name: r.user_name, mySocket: socket.id});
-                SetPersonalData(r.user_name, r.id);
+                SetPersonalDataAction(personalDataReducer, r.user_name, r.id, r.favourites ? r.favourites : "");
             }
         });
     }
 
     //REGISTRATION
     function registration() {
-        fetch("http://localhost:3001/registration", {
+        fetch(ADDRESS + "/registration", {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
@@ -72,7 +73,7 @@ function EnterWindow({ socket, SetPersonalData }) {
 }
 
 const mapDispatchToProps = {
-    SetPersonalData: SetPersonalDataAction
+    SetPersonalDataAction
 }
 
 function mapStateToProps(state) {

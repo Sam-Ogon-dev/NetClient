@@ -1,12 +1,3 @@
-%profile-general {
-  box-shadow: 0 0 3px rgba(0,0,0,0.61);
-  border-radius: 3px;
-  width: 50%;
-  font-size: 35px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
 
 
 .my-profile {
@@ -22,7 +13,7 @@
   flex-direction: column;
   align-items: center;
   margin: 20px;
-  background-color: rgba(141, 255, 122, 0.51);
+  background-color: #b6e9f582;
   width: 100%;
   border-radius: 5px;
   box-shadow: 0 0 3px rgba(0,0,0,0.61);
@@ -42,24 +33,9 @@
 }
 
 .label-profile {
+  text-align: center;
   margin: 10px;
   background-color: rgba(220, 246, 255, 0.87);
   @extend %profile-general;
 }
 
-.button-change {
-  background-color: #ffe645;
-  margin: 10px;
-  @extend %profile-general;
-}
-
-.label-profile-mini {
-  @extend %profile-general;
-  font-size: 15px;
-  box-shadow: none;
-}
-
-.button_cancel {
-  @extend %profile-general;
-  background-color: red;
-}

@@ -10,7 +10,7 @@ import EnterWindow from "../EnterWindow";
 
 function MessageROUTE({socketReducer, personalDataReducer}) {
     const [messages, setMessages] = React.useState([]);
-    const [companion, setCompanion] = React.useState("");
+    const [companion, setCompanion] = React.useState({});
     const [correspondenceID, setCorrespondenceID] = React.useState(false);
     let {auth, user_name, id} = personalDataReducer;
     let {socket} = socketReducer;
@@ -34,20 +34,20 @@ function MessageROUTE({socketReducer, personalDataReducer}) {
 
                 <div className="messages-area">
 
-                    {companion === "" ? "" :
+                    {!companion.companion ? "" :
                         <>
-                            <Companion companion={companion}/>
+                            <Companion companion={companion.companion}/>
 
                             <Messages messages={messages}
                                       setMessages={setMessages}
                                       name={user_name}
                                       socket={socket}
                                       correspondenceID={correspondenceID}
-                                      companion={companion}
+                                      companion={companion.companionID}
                                       myID={id}
                             />
 
-                            <InputMassage socket={socket} myID={id} companion={companion} correspondenceID={correspondenceID}/>
+                            <InputMassage socket={socket} myID={id} companion={companion.companion} correspondenceID={correspondenceID}/>
                         </>
                     }
 

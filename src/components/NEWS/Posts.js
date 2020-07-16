@@ -1,28 +1,42 @@
 import React from "react";
-import avatar from "../../assets/avatar.jpg";
 import favouritesActive from "../../assets/StarYellow.svg";
 import favouritesInactive from "../../assets/Star.svg";
 
 
-export default function Post(news) {
+export default function Posts({news, personalDataReducer, SetFavouritesAction, favourites}) {
 
     return(
-        <div className="post">
-            <div className="author">
-                <img src={avatar} className="avatar"/>
-                <div className="user-name">Saaam fgfgh</div>
-            </div>
+        <>
+            {news.map(post => (
+                <div key={post.id} className="post">
+                    <div className="author">
+                        <img src={URL.createObjectURL(new Blob([new Uint8Array(post.author.data)]))} className="avatar"/>
+                        <div className="user-name">{post.user_name}</div>
+                    </div>
 
-            <div className="post-content">
-                <img src={avatar} className="post-image"/>
-                <div className="post-text">dfvdfv dkvjdlkvmlkdf dnjdnfjvn ndjfnvjdfn njdfnvjfdn ndjfnvjdn
-                    jdfnvjdfnn nnn ndfnvjdfnv njdfnvj
+                    <div className="post-content">
+                        {post.image ?
+                            <img src={URL.createObjectURL(new Blob([new Uint8Array(post.image.data)]))} className="post-image"/>
+                            : ""
+                        }
+
+                        {post.text ?
+                            <div className="post-text">
+                                {post.text}
+                            </div>
+                            : ""
+                        }
+
+
+                    </div>
+
+                    <div className="favourites">
+                        <img src={favourites.includes(post.id.toString()) ? favouritesActive : favouritesInactive}
+                             onClick={ () => SetFavouritesAction(personalDataReducer, post.id.toString()) }/>
+                    </div>
                 </div>
-            </div>
-
-            <div className="favourites">
-                <img src={favouritesInactive}/>
-            </div>
-        </div>
+            ))}
+        </>
     );
 }
+

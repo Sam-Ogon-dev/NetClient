@@ -4,6 +4,9 @@ import {BrowserRouter as Router, Switch, Link, Route} from 'react-router-dom';
 import MyProfileROUTE from "./MY_PROFILE/MyProfileROUTE";
 import {connect} from "react-redux";
 import {SetPersonalAvatarAction} from "../actions/SetPersonalDataAction";
+import cookie from "react-cookies"
+import NewsROUTE from "./NEWS/NewsROUTE";
+import {ADDRESS} from "../config";
 
 
 
@@ -13,13 +16,49 @@ function Content({SetPersonalAvatar, personalDataReducer, socketReducer}) {
     const [activeBookmarks, setActiveBookmarks] = React.useState(1);
     const menuItem = [["Моя страница", "/My_profile"],
                       ["Сообщения", "/"],
-                      ["Новости", "/news"],
-                      ["Настройки", "/settings"]];
+                      ["Новости", "/news"]];
+
+
+    //SEND ONLINE EVENT IF HAS CORRECTLY COOKIE
+    useEffect(() => {
+        const authCookie = cookie.load("auth")
+        if(authCookie === "process" || authCookie === undefined) { return }
+        fetch(ADDRESS + "/auth", {
+            method: 'POST',
+            credentials: "include",
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify({user_name, password: cookie.load("password")})
+        }).then(r => r.json()).then(r => {
+            if (r.error) {
+                cookie.remove("user_name");
+                cookie.remove("id");
+                cookie.remove("password");
+                cookie.save("auth", "process")
+                window.location.assign("/");
+                return;
+            }
+            socket.emit("online", {user_name, mySocket: socket.id})
+        });
+    }, []);
+
 
     //SET AVATAR
     useEffect(() => {
         SetPersonalAvatar(personalDataReducer);
-        socket.emit("online", {user_name, mySocket: socket.id})
+    }, []);
+
+
+    //SET ACTIVE BOOKMARK WHEN PAGE IS LOAD IN THE FIRST TIME
+    useEffect(() => {
+        const origin = window.location.origin;
+        for (let i = 0; i < menuItem.length; i++) {
+            if(window.location.href === origin + menuItem[i][1]) {
+                setActiveBookmarks(i);
+                break;
+            }
+        }
     }, []);
 
 
@@ -29,10 +68,8 @@ function Content({SetPersonalAvatar, personalDataReducer, socketReducer}) {
                     <div className="bookmarks-menu">
 
                         {menuItem.map((item, index) =>
-                            <div className={index === activeBookmarks ? "bookmarks activeBookmarks" : "bookmarks"}
-                                 onClick={() => setActiveBookmarks(index)}
-                                 key={index}>
-                                <Link to={item[1]}>{item[0]}</Link>
+                            <div className={index === activeBookmarks ? "bookmarks activeBookmarks" : "bookmarks"} key={index}>
+                                <Link onClick={() => setActiveBookmarks(index)} to={item[1]}>{item[0]}</Link>
                             </div>
                         )}
 
@@ -42,6 +79,7 @@ function Content({SetPersonalAvatar, personalDataReducer, socketReducer}) {
                     <Switch>
                         <Route exact path="/" component={MessageROUTE}/>
                         <Route exact path="/My_profile" component={MyProfileROUTE}/>
+                        <Route exact path="/News" component={NewsROUTE}/>
                     </Switch>
                 </div>
             </Router>
@@ -61,8 +99,7 @@ function mapStateToProps(state) {
 export default connect(mapStateToProps, mapDispatchToProps)(Content);
 
 
+//сделать отправку onlineList только тем пользователям, которые находятся на странице сообщений(добавить в onlineList на сервере ячейку с boolen)
+//и отправлять тем, у кого true
 
-//сделать загрузку картинки на сервер через страницу профиля
-//сделать возможность изменения имени и пароля
-//начать делать новостную ленту
 

@@ -12,12 +12,13 @@
 }
 
 .enter-form {
+  padding: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  width: 40%;
-  height: 40%;
+  min-width: 40%;
+  min-height: 40%;
   background-color: #f1f9fd;
   border-radius: 7px;
 
