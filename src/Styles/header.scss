@@ -18,6 +18,8 @@
 }
 
 .logo-icon {
+  filter: grayscale(100%) brightness(50%);
+  margin: 10px;
   height: 80px;
   width: 80px;
 }
