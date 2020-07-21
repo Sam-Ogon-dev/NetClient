@@ -1,5 +1,5 @@
 import React from "react";
-import Logo from "../assets/Logo.svg";
+import Logo from "../assets/Logo.png";
 
 
 export default function Header() {
@@ -9,7 +9,7 @@ export default function Header() {
                 <img src={Logo} className="logo-icon"/>
             </div>
             <div className="first-symbol">В</div>
-            <div className="logo-label">тентаклях</div>
+            <div className="logo-label">сети</div>
         </header>
     );
 }
